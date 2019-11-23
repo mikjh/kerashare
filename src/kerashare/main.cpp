@@ -38,14 +38,25 @@ int main(int argc, char** argv)
         return -1;
     }
 
-    cv::Mat imageTranslated = kerashare::image_tools::translate_image(image, 0, -10);
-   
-    cv::namedWindow("Display Image", cv::WINDOW_AUTOSIZE );
+    cv::namedWindow("Display Image", cv::WINDOW_AUTOSIZE);
     imshow("Display Image", image);
     cv::waitKey(0);
-    imshow("Display Image", imageTranslated);
+
+    ::kerashare::image_tools::ImageManipulator imageManipulator(image);
+
+    cv::Mat smoothedImage = imageManipulator
+        .blur(1)
+        .get();
+
+    cv::Mat processedImage = imageManipulator
+        .translate(0, -10)
+        .get();
+   
+    imshow("Display Image", smoothedImage);
     cv::waitKey(0);
-    imshow("Display Image", 0.9*image + 0.1*imageTranslated);
+    imshow("Display Image", processedImage);
+    cv::waitKey(0);
+    imshow("Display Image", 0.9*smoothedImage + 0.1*processedImage);
     cv::waitKey(0);
     return 0;
 }

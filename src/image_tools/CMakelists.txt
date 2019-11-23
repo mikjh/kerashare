@@ -11,7 +11,8 @@ add_library( ${PROJECT_NAME} STATIC
 	include/image_tools/image_tools.hpp
 
 	#source files
-	image_tools.cpp)
+	image_tools.cpp
+	opacity.cpp)
 
 target_link_libraries(${PROJECT_NAME} 
 	PUBLIC ${CONAN_LIBS})

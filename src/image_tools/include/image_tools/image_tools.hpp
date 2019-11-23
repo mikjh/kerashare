@@ -1,9 +1,30 @@
 #pragma once
 
 #include <opencv2/core/mat.hpp>
+#include "image_tools/opacity.hpp"
 
-namespace image_tools
+namespace kerashare::image_tools
 {
-// simple function to translate a function with a two dim offset
-cv::Mat translate_image(const cv::Mat& image, int offsetx, int offsety);
+class Opacitity
+{
+    Opacitity(float opacity);
+};
+
+class ImageManipulator
+{
+public:
+    ImageManipulator(const cv::Mat& image) : image_(image.clone()) {}
+
+    ImageManipulator& translate(int offsetx, int offsety);
+    ImageManipulator& blur(float sigma);
+    ImageManipulator& setOpacity(Opacity opacity);
+
+    cv::Mat get();
+
+private:
+    cv::Mat image_;
+};
+
+
+
 }
