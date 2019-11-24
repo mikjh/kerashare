@@ -8,7 +8,7 @@ conan_basic_setup()
 
 add_library( ${PROJECT_NAME} STATIC
     #headers
-	include/image_tools/image_tools.hpp
+	include/image_tools/manipulator.hpp
 
 	#source files
 	image_tools.cpp

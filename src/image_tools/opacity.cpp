@@ -1,3 +1,5 @@
+#pragma once
+
 #include "image_tools/opacity.hpp"
 #include <iostream>
 

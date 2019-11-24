@@ -1,4 +1,4 @@
-#include "image_tools/image_tools.hpp"
+#include "image_tools/manipulator.hpp"
 #include <opencv2/imgproc.hpp>
 #include <exception>
 

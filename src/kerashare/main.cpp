@@ -4,7 +4,7 @@
 #include <vector>
 #include <string>
 
-#include "image_tools/image_tools.hpp"
+#include "image_tools/manipulator.hpp"
 
 std::vector<std::string> getArgs(int argc, char** argv)
 {
