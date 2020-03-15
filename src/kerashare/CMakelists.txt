@@ -1,7 +1,15 @@
-project( kerashare_app )
+project( kerashare )
 
 cmake_minimum_required(VERSION 3.15)
 
-add_executable(${PROJECT_NAME} main.cpp)
+add_library(${PROJECT_NAME} STATIC 
+	kerashare.cpp )
 
-target_link_libraries(${PROJECT_NAME} processing)
+target_include_directories(${PROJECT_NAME} 
+		PUBLIC include)
+
+target_link_libraries(${PROJECT_NAME} 
+		PRIVATE processing)
+
+add_executable(${PROJECT_NAME}_app main.cpp)
+target_link_libraries(${PROJECT_NAME}_app kerashare processing)

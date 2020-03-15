@@ -6,6 +6,7 @@
 
 #include "processing/manipulator.hpp"
 #include "processing/superimpose.hpp"
+#include "kerashare/kerashare.hpp"
 
 std::vector<std::string> getArgs(int argc, char** argv)
 {
@@ -16,25 +17,6 @@ std::vector<std::string> getArgs(int argc, char** argv)
         command_line_arguments.push_back(argv[i]);
     }
     return command_line_arguments;
-}
-
-void mouseCallback (int event, int x, int y, int flags, void* userdata)
-{
-    cv::Point2i* prev_pos = reinterpret_cast<cv::Point2i*>(userdata);
-    if (event == cv::EVENT_LBUTTONDOWN)
-    {
-        std::cout << "down event at: ";
-        std::cout << "(" << x << "," << y << ")" << std::endl;
-    }
-    else if (event == cv::EVENT_LBUTTONUP)
-    {
-        std::cout << "up event at: ";
-        std::cout << "(" << x << "," << y << ")" << std::endl;
-        auto diff = *prev_pos - cv::Point2i{ x,y };
-        std::cout << "(" << diff.x << "," << diff.y << ")" << std::endl;
-    }
-
-    *prev_pos = cv::Point2i{ x,y };
 }
 
 int main(int argc, char** argv)
@@ -60,9 +42,8 @@ int main(int argc, char** argv)
 
     cv::namedWindow("Display Image", cv::WINDOW_AUTOSIZE);
 
-    cv::Point2i position{ 0,0 };
-
-    cv::setMouseCallback("Display Image", mouseCallback, &position);
+    auto kerashare = kerashare::Kerashare{};
+    cv::setMouseCallback("Display Image", kerashare::mouseCallback, &kerashare);
 
     imshow("Display Image", image);
     cv::waitKey(0);

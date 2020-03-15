@@ -1,0 +1,13 @@
+project( core )
+
+cmake_minimum_required(VERSION 3.15)
+
+add_library( ${PROJECT_NAME} STATIC
+	opacity.cpp
+	image.cpp)
+
+target_link_libraries(${PROJECT_NAME} 
+	PUBLIC ${CONAN_LIBS})
+
+target_include_directories(${PROJECT_NAME} 
+	PUBLIC include)

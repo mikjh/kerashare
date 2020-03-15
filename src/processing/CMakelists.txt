@@ -1,0 +1,14 @@
+project( processing )
+
+cmake_minimum_required(VERSION 3.15)
+
+add_library( ${PROJECT_NAME} STATIC
+	manipulator.cpp
+	superimpose.cpp)
+
+target_link_libraries(${PROJECT_NAME} 
+	PUBLIC ${CONAN_LIBS}
+	PUBLIC core)
+
+target_include_directories(${PROJECT_NAME} 
+	PUBLIC include)
