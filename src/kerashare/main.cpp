@@ -4,8 +4,6 @@
 #include <vector>
 #include <string>
 
-#include "processing/manipulator.hpp"
-#include "processing/superimpose.hpp"
 #include "kerashare/kerashare.hpp"
 
 std::vector<std::string> getArgs(int argc, char** argv)
@@ -40,39 +38,19 @@ int main(int argc, char** argv)
         return -1;
     }
 
-    cv::namedWindow("Display Image", cv::WINDOW_AUTOSIZE);
+    cv::namedWindow("kerashare_test_image", cv::WINDOW_AUTOSIZE);
 
-    auto kerashare = kerashare::Kerashare{};
-    cv::setMouseCallback("Display Image", kerashare::mouseCallback, &kerashare);
+    auto kerashare = kerashare::Kerashare{ image };
+    cv::setMouseCallback("kerashare_test_image", kerashare::mouseCallback, &kerashare);
 
-    imshow("Display Image", image);
+    cv::imshow("kerashare_test_image", image);
     cv::waitKey(0);
-
-    ::kerashare::processing::ImageManipulator imageManipulator(image);
-
-    auto smoothedImage = imageManipulator
-        .blur(1)
-        .setOpacity(0.9)
-        .get();
-
-    auto processedImage1 = imageManipulator
-        .translate(0, -10)
-        .setOpacity(0.1)
-        .get();
-
-    auto processedImage2 = imageManipulator
-        .translate(0, 20)
-        .setOpacity(0.2)
-        .get();
-
-    imshow("Display Image", static_cast<cv::Mat>(smoothedImage));
     
+    cv::Mat processed_image = kerashare.getProcessedImage();
+
+    cv::namedWindow("kerashare_test_image", cv::WINDOW_AUTOSIZE);
+    cv::imshow("Processed image.", processed_image);
     cv::waitKey(0);
-    imshow("Display Image2", static_cast<cv::Mat>(processedImage1));
-    cv::waitKey(0);
-    imshow("Display Image3", static_cast<cv::Mat>(processedImage2));
-    cv::waitKey(0);
-    imshow("Display Image4", kerashare::processing::superimpose(smoothedImage, processedImage1, processedImage2));
-    cv::waitKey(0);
+
     return 0;
 }
