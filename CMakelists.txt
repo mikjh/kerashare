@@ -2,6 +2,8 @@ project(kerashare)
 
 add_compile_options("/std:c++latest")
 
+set(VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_BINARY_DIR}")
+
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()
 

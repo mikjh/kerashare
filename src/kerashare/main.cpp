@@ -4,7 +4,8 @@
 #include <vector>
 #include <string>
 
-#include "image_tools/manipulator.hpp"
+#include "processing/manipulator.hpp"
+#include "processing/superimpose.hpp"
 
 std::vector<std::string> getArgs(int argc, char** argv)
 {
@@ -15,6 +16,25 @@ std::vector<std::string> getArgs(int argc, char** argv)
         command_line_arguments.push_back(argv[i]);
     }
     return command_line_arguments;
+}
+
+void mouseCallback (int event, int x, int y, int flags, void* userdata)
+{
+    cv::Point2i* prev_pos = reinterpret_cast<cv::Point2i*>(userdata);
+    if (event == cv::EVENT_LBUTTONDOWN)
+    {
+        std::cout << "down event at: ";
+        std::cout << "(" << x << "," << y << ")" << std::endl;
+    }
+    else if (event == cv::EVENT_LBUTTONUP)
+    {
+        std::cout << "up event at: ";
+        std::cout << "(" << x << "," << y << ")" << std::endl;
+        auto diff = *prev_pos - cv::Point2i{ x,y };
+        std::cout << "(" << diff.x << "," << diff.y << ")" << std::endl;
+    }
+
+    *prev_pos = cv::Point2i{ x,y };
 }
 
 int main(int argc, char** argv)
@@ -39,24 +59,39 @@ int main(int argc, char** argv)
     }
 
     cv::namedWindow("Display Image", cv::WINDOW_AUTOSIZE);
+
+    cv::Point2i position{ 0,0 };
+
+    cv::setMouseCallback("Display Image", mouseCallback, &position);
+
     imshow("Display Image", image);
     cv::waitKey(0);
 
-    ::kerashare::image_tools::ImageManipulator imageManipulator(image);
+    ::kerashare::processing::ImageManipulator imageManipulator(image);
 
-    cv::Mat smoothedImage = imageManipulator
+    auto smoothedImage = imageManipulator
         .blur(1)
+        .setOpacity(0.9)
         .get();
 
-    cv::Mat processedImage = imageManipulator
+    auto processedImage1 = imageManipulator
         .translate(0, -10)
+        .setOpacity(0.1)
         .get();
-   
-    imshow("Display Image", smoothedImage);
+
+    auto processedImage2 = imageManipulator
+        .translate(0, 20)
+        .setOpacity(0.2)
+        .get();
+
+    imshow("Display Image", static_cast<cv::Mat>(smoothedImage));
+    
     cv::waitKey(0);
-    imshow("Display Image", processedImage);
+    imshow("Display Image2", static_cast<cv::Mat>(processedImage1));
     cv::waitKey(0);
-    imshow("Display Image", 0.9*smoothedImage + 0.1*processedImage);
+    imshow("Display Image3", static_cast<cv::Mat>(processedImage2));
+    cv::waitKey(0);
+    imshow("Display Image4", kerashare::processing::superimpose(smoothedImage, processedImage1, processedImage2));
     cv::waitKey(0);
     return 0;
 }
